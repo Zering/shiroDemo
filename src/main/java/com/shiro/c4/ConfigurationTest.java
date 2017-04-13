@@ -1,34 +1,31 @@
-package c3;
+package com.shiro.c4;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.Factory;
-import org.apache.shiro.util.ThreadContext;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * 通用
+ * 配置与{@link com.shiro.c4.NoConfigurationTest} 等价
  * 
  * @author zhanghaojie
  *
  */
-public class BaseTest {
+public class ConfigurationTest {
 
-	public void teardown(){
-		ThreadContext.unbindSubject();
-	}
-	
-	protected Subject login(String conf,String username,String password){
-		Factory<SecurityManager> factory = new IniSecurityManagerFactory(conf);
+	@Test
+	public void configurationTest(){
+		Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:c4/shiro-config.ini");
 		SecurityManager manager = factory.getInstance();
+
 		SecurityUtils.setSecurityManager(manager);
 		Subject subject = SecurityUtils.getSubject();
-		AuthenticationToken token = new UsernamePasswordToken(username, password);
+		UsernamePasswordToken token = new UsernamePasswordToken("zhang", "123");
 		subject.login(token);
-		return subject;
+		Assert.assertTrue(subject.isAuthenticated());
 	}
-	
 }

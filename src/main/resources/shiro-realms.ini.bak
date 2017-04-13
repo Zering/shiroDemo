@@ -1,4 +1,0 @@
-#声明realm
-UsernamePasswordRealm=com.shiro.realm.UsernamePasswordRealm
-#指定SecurityManager的realms
-securityManager.realms=$UsernamePasswordRealm

@@ -12,7 +12,7 @@ public class User {
 	private String username;
 	private String password;
 	private String salt;
-	private Boolean islocked = Boolean.FALSE; // 可以用Enum来优化表示用户的多种状态
+	private Boolean locked = Boolean.FALSE; // 可以用Enum来优化表示用户的多种状态
 
 	public User() {
 	}
@@ -55,21 +55,22 @@ public class User {
 		this.salt = salt;
 	}
 
-	public Boolean getIslocked() {
-		return islocked;
+	public Boolean getLocked() {
+		return locked;
 	}
 
-	public void setIslocked(Boolean islocked) {
-		this.islocked = islocked;
+	public void setLocked(Boolean locked) {
+		this.locked = locked;
 	}
+
 	/**
 	 * 用户名+盐
 	 * 
 	 * @return
 	 */
 	public String getCredentialsSalt() {
-        return username + salt;
-    }
+		return username + salt;
+	}
 
 	@Override
 	public int hashCode() {
@@ -99,7 +100,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", salt=" + salt + ", islocked="
-				+ islocked + "]";
+				+ locked + "]";
 	}
 
 }

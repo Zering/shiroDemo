@@ -23,8 +23,11 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public void changePassword(Long userId, String newPassword) {
-		// TODO Auto-generated method stub
-		
+		User user = userDao.findOne(userId);
+		user.setPassword(newPassword);
+		passwordHelper.encryptPassword(user);
+		System.out.println(user.getPassword());
+		userDao.updateUser(user);
 	}
 
 	@Override
@@ -41,8 +44,7 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public User findUserByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return userDao.findUserByUsername(username);
 	}
 
 	@Override

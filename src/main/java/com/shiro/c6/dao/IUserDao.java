@@ -7,7 +7,7 @@ import com.shiro.c6.entity.User;
 public interface IUserDao {
 
 	public User createUser(User user);
-	public User updateUser(User user);
+	public void updateUser(User user);
 	public void DeleteUser(Long userId);
 	
 	public void correlationRoles(Long userId,Long... roleIds);

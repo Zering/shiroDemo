@@ -3,8 +3,10 @@ package com.shiro.c6.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Set;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -29,7 +31,7 @@ public class UserDaoImpl implements IUserDao {
 				preparedStatement.setString(1, user.getUsername());
 				preparedStatement.setString(2, user.getPassword());
 				preparedStatement.setString(3, user.getSalt());
-				preparedStatement.setBoolean(4, user.getIslocked());
+				preparedStatement.setBoolean(4, user.getLocked());
 				return preparedStatement;
 			}
 		}, keyHolder);
@@ -38,39 +40,64 @@ public class UserDaoImpl implements IUserDao {
 	}
 
 	@Override
-	public User updateUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateUser(User user) {
+		String sql = "update sys_users set username=?,password=?,salt=?,locked=? where id = ?";
+		jdbcTemplate.update(sql, user.getUsername(), user.getPassword(), user.getSalt(), user.getLocked(),
+				user.getId());
 	}
 
 	@Override
 	public void DeleteUser(Long userId) {
-		// TODO Auto-generated method stub
-
+		String sql = "delelte from sys_users where id = ?";
+		jdbcTemplate.update(sql, userId);
 	}
 
 	@Override
 	public void correlationRoles(Long userId, Long... roleIds) {
-		// TODO Auto-generated method stub
-
+		if(roleIds == null || roleIds.length == 0){
+			return;
+		}
+		String sql = "insert into sys_users_roles (user_id,role_id) values (?,?)";
+		for (Long roleId : roleIds) {
+			jdbcTemplate.update(sql, userId,roleId);
+		}
 	}
 
 	@Override
 	public void uncorrelationRoles(Long userId, Long... roleIds) {
-		// TODO Auto-generated method stub
-
+		String sql = "delete from sys_users_roles where user_id = ? and role_id = ?";
+		for (Long roleId : roleIds) {
+			if(exists(userId, roleId)){
+				jdbcTemplate.update(sql, userId,roleId);
+			}
+		}
+	}
+	
+	private boolean exists(Long userId,Long roleId){
+		String sql = "select count(1) from sys_users_roles where user_id = ? and role_id = ?";
+		return jdbcTemplate.queryForObject(sql, Integer.class,userId,roleId) != 0;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public User findOne(Long userId) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "select id,username,password,salt,locked from sys_users where id = ?";
+		List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class),userId);
+		if(userList.size() == 0){
+			return null;
+		}
+		return userList.get(0);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public User findUserByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "select id,username,password,salt,locked from sys_users where username = ?";
+		List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class),username);
+		if(userList.size() == 0){
+			return null;
+		}
+		return userList.get(0);
 	}
 
 	@Override

@@ -10,8 +10,8 @@ public class Role {
 
 	private Long id;
 	private String role;
-	private String describe;
-	private boolean available = Boolean.FALSE;
+	private String description;
+	private Boolean available = Boolean.FALSE;
 
 	public Role() {
 	}
@@ -19,7 +19,7 @@ public class Role {
 	public Role(String role, String describe, boolean available) {
 		super();
 		this.role = role;
-		this.describe = describe;
+		this.description = describe;
 		this.available = available;
 	}
 
@@ -39,19 +39,19 @@ public class Role {
 		this.role = role;
 	}
 
-	public String getDescribe() {
-		return describe;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescribe(String describe) {
-		this.describe = describe;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public boolean isAvailable() {
+	public Boolean getAvailable() {
 		return available;
 	}
 
-	public void setAvailable(boolean available) {
+	public void setAvailable(Boolean available) {
 		this.available = available;
 	}
 
@@ -82,7 +82,7 @@ public class Role {
 
 	@Override
 	public String toString() {
-		return "Role [id=" + id + ", role=" + role + ", describe=" + describe + ", available=" + available + "]";
+		return "Role [id=" + id + ", role=" + role + ", describe=" + description + ", available=" + available + "]";
 	}
 
 }

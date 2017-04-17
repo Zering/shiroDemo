@@ -32,14 +32,12 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public void correlationRoles(Long userId, Long... roleIds) {
-		// TODO Auto-generated method stub
-		
+		userDao.correlationRoles(userId, roleIds);
 	}
 
 	@Override
 	public void uncorrelationRoles(Long userId, Long... roleIds) {
-		// TODO Auto-generated method stub
-		
+		userDao.uncorrelationRoles(userId, roleIds);
 	}
 
 	@Override
@@ -49,14 +47,12 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public Set<String> findRoles(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return userDao.findRoles(username);
 	}
 
 	@Override
 	public Set<String> findPermissions(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return userDao.findPermissions(username);
 	}
 
 }

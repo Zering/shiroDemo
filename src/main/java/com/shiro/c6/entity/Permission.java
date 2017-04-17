@@ -10,7 +10,7 @@ public class Permission {
 
 	private Long id;
 	private String permission;// 权限标识
-	private String decribe;
+	private String decription;
 	private Boolean available = Boolean.FALSE;
 
 	public Permission() {
@@ -19,7 +19,7 @@ public class Permission {
 	public Permission(String permission, String decribe, Boolean available) {
 		super();
 		this.permission = permission;
-		this.decribe = decribe;
+		this.decription = decribe;
 		this.available = available;
 	}
 
@@ -39,12 +39,12 @@ public class Permission {
 		this.permission = permission;
 	}
 
-	public String getDecribe() {
-		return decribe;
+	public String getDecription() {
+		return decription;
 	}
 
-	public void setDecribe(String decribe) {
-		this.decribe = decribe;
+	public void setDecription(String decription) {
+		this.decription = decription;
 	}
 
 	public Boolean getAvailable() {
@@ -82,8 +82,7 @@ public class Permission {
 
 	@Override
 	public String toString() {
-		return "Permission [id=" + id + ", permission=" + permission + ", decribe=" + decribe + ", available="
-				+ available + "]";
+		return "Permission [id=" + id + ", permission=" + permission + ", decribe=" + decription + ", available=" + available + "]";
 	}
 
 }

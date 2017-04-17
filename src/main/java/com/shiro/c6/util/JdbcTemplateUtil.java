@@ -19,7 +19,7 @@ public class JdbcTemplateUtil {
 
 		DruidDataSource dataSource = new DruidDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3300/shiro");
+		dataSource.setUrl("jdbc:mysql://localhost:3300/shiro?characterEncoding=UTF-8");
 		dataSource.setUsername("root");
 		dataSource.setPassword("1qaz2wsx");
 		return new JdbcTemplate(dataSource);

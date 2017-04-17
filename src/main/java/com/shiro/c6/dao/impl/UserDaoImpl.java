@@ -3,6 +3,7 @@ package com.shiro.c6.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -54,12 +55,13 @@ public class UserDaoImpl implements IUserDao {
 
 	@Override
 	public void correlationRoles(Long userId, Long... roleIds) {
-		if(roleIds == null || roleIds.length == 0){
+		if (roleIds == null || roleIds.length == 0) {
 			return;
 		}
 		String sql = "insert into sys_users_roles (user_id,role_id) values (?,?)";
 		for (Long roleId : roleIds) {
-			jdbcTemplate.update(sql, userId,roleId);
+			if(!exists(userId, roleId))
+				jdbcTemplate.update(sql, userId, roleId);
 		}
 	}
 
@@ -67,23 +69,23 @@ public class UserDaoImpl implements IUserDao {
 	public void uncorrelationRoles(Long userId, Long... roleIds) {
 		String sql = "delete from sys_users_roles where user_id = ? and role_id = ?";
 		for (Long roleId : roleIds) {
-			if(exists(userId, roleId)){
-				jdbcTemplate.update(sql, userId,roleId);
+			if (exists(userId, roleId)) {
+				jdbcTemplate.update(sql, userId, roleId);
 			}
 		}
 	}
-	
-	private boolean exists(Long userId,Long roleId){
+
+	private boolean exists(Long userId, Long roleId) {
 		String sql = "select count(1) from sys_users_roles where user_id = ? and role_id = ?";
-		return jdbcTemplate.queryForObject(sql, Integer.class,userId,roleId) != 0;
+		return jdbcTemplate.queryForObject(sql, Integer.class, userId, roleId) != 0;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public User findOne(Long userId) {
 		String sql = "select id,username,password,salt,locked from sys_users where id = ?";
-		List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class),userId);
-		if(userList.size() == 0){
+		List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class), userId);
+		if (userList.size() == 0) {
 			return null;
 		}
 		return userList.get(0);
@@ -93,23 +95,26 @@ public class UserDaoImpl implements IUserDao {
 	@Override
 	public User findUserByUsername(String username) {
 		String sql = "select id,username,password,salt,locked from sys_users where username = ?";
-		List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class),username);
-		if(userList.size() == 0){
+		List<User> userList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class), username);
+		if (userList.size() == 0) {
 			return null;
 		}
 		return userList.get(0);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Set<String> findRoles(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "select role from sys_users u , sys_users_roles ur, sys_roles r where u.id = ur.user_id and ur.role_id = r.id and u.username = ?";
+		return new HashSet(jdbcTemplate.queryForList(sql, String.class,username));
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Set<String> findPermissions(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = "SELECT permission FROM sys_users u , sys_users_roles ur, sys_roles r,sys_roles_permissions rp, sys_permissions p "
+				+ "WHERE u.id = ur.user_id AND ur.role_id = r.id AND r.id = rp.role_id AND rp.permission_id = p.id AND u.username = ?";
+		return new HashSet(jdbcTemplate.queryForList(sql, String.class, username));
 	}
 
 }

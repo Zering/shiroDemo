@@ -2,7 +2,7 @@ package com.shiro.c6.service;
 
 import com.shiro.c6.entity.Permission;
 
-public interface IPermissonService {
+public interface IPermissionService {
 
 	/**
 	 * 创建权限

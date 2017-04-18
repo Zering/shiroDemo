@@ -6,41 +6,6 @@
         version="3.0"
         metadata-complete="false">
 
-    <!--- shiro 1.1 -->
-    <!--<filter>-->
-        <!--<filter-name>iniShiroFilter</filter-name>-->
-        <!--<filter-class>org.apache.shiro.web.servlet.IniShiroFilter</filter-class>-->
-        <!--<init-param>-->
-            <!--<param-name>configPath</param-name>-->
-            <!--<param-value>classpath:shiro.ini</param-value>&lt;!&ndash; 默认先从/WEB-INF/shiro.ini，如果没有找classpath:shiro.ini&ndash;&gt;-->
-        <!--</init-param>-->
-        <!--&lt;!&ndash;<init-param>&ndash;&gt;-->
-            <!--&lt;!&ndash;<param-name>config</param-name>&ndash;&gt;-->
-            <!--&lt;!&ndash;<param-value>&ndash;&gt;-->
-                <!--&lt;!&ndash;[main]&ndash;&gt;-->
-                <!--&lt;!&ndash;authc.loginUrl=/login&ndash;&gt;-->
-
-                <!--&lt;!&ndash;[users]&ndash;&gt;-->
-                <!--&lt;!&ndash;zhang=123,admin&ndash;&gt;-->
-
-                <!--&lt;!&ndash;[roles]&ndash;&gt;-->
-                <!--&lt;!&ndash;admin=user:*,menu:*&ndash;&gt;-->
-
-                <!--&lt;!&ndash;[urls]&ndash;&gt;-->
-                <!--&lt;!&ndash;/login=anon&ndash;&gt;-->
-                <!--&lt;!&ndash;/static/**=anon&ndash;&gt;-->
-                <!--&lt;!&ndash;/authenticated=authc&ndash;&gt;-->
-                <!--&lt;!&ndash;/role=authc,roles[admin]&ndash;&gt;-->
-                <!--&lt;!&ndash;/permission=authc,perms["user:create"]&ndash;&gt;-->
-            <!--&lt;!&ndash;</param-value>&ndash;&gt;-->
-        <!--&lt;!&ndash;</init-param>&ndash;&gt;-->
-    <!--</filter>-->
-    <!--<filter-mapping>-->
-        <!--<filter-name>iniShiroFilter</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
-    <!--</filter-mapping>-->
-
-
     <!--- shiro 1.2 -->
     <listener>
         <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
@@ -51,7 +16,12 @@
     </context-param>
     <context-param>
         <param-name>shiroConfigLocations</param-name>
-        <param-value>classpath:c7/shiro.ini</param-value>
+        <!-- 在没有权限时，只能跳转到固定的页面-->
+        <!--<param-value>classpath:c7/shiro.ini</param-value> -->
+        <!-- basic拦截器，没有权限或没有登录时 弹出一个登录对话框-->
+        <!-- <param-value>classpath:c7/shiro-basicfilterlogin.ini</param-value> -->
+        <!-- 表单验证，验证后回到之前的页面-->
+        <param-value>classpath:c7/shiro-formfilterlogin.ini</param-value>        
     </context-param>
     <filter>
         <filter-name>shiroFilter</filter-name>
